@@ -6,11 +6,7 @@ package app.model;
 
 import java.util.Date;
 
-/**
- *
- * @author Personal
- */
-public class solicitud_alquiler {
+public class SolicitudAlquiler {
     private Long id;
     private String hora_inicio;
     private String hora_fin;
@@ -19,6 +15,22 @@ public class solicitud_alquiler {
     private Integer estado;
     private Socio socio;
     private Campo campo;
+
+    public Socio getSocio() {
+        return socio;
+    }
+
+    public void setSocio(Socio socio) {
+        this.socio = socio;
+    }
+
+    public Campo getCampo() {
+        return campo;
+    }
+
+    public void setCampo(Campo campo) {
+        this.campo = campo;
+    }
 
     public Long getId() {
         return id;
@@ -69,21 +81,7 @@ public class solicitud_alquiler {
         this.estado = estado;
     }
 
-    public Long getId_socio() {
-        return id_socio;
-    }
 
-    public void setId_socio(Long id_socio) {
-        this.id_socio = id_socio;
-    }
-
-    public Long getId_campo() {
-        return id_campo;
-    }
-
-    public void setId_campo(Long id_campo) {
-        this.id_campo = id_campo;
-    }
     
     
 }
