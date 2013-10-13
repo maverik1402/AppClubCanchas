@@ -13,7 +13,7 @@ public class campo {
     private Integer tipo;
     private Long costo_hora;
     private Local local;
-
+    
     /**
      * @return the id
      */
