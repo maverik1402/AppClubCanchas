@@ -3,6 +3,7 @@ package app.model;
 
 import javax.ejb.Local;
 
+
 public class Campo {
     
     
