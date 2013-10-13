@@ -7,7 +7,7 @@ public class local {
     private Long id;
     private String direccion;
     private String descripcion;
-    private String estado;
+    private Integer estado;
     private String maps;
     private String telefono;
 
@@ -35,15 +35,6 @@ public class local {
         this.descripcion = descripcion;
     }
 
-    public String getEstado() {
-        return estado;
-    }
-
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
     public String getMaps() {
         return maps;
     }
@@ -60,6 +51,20 @@ public class local {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    /**
+     * @return the estado
+     */
+    public Integer getEstado() {
+        return estado;
+    }
+
+    /**
+     * @param estado the estado to set
+     */
+    public void setEstado(Integer estado) {
+        this.estado = estado;
     }
     
     
