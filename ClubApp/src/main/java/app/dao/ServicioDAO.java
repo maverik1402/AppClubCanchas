@@ -1,7 +1,6 @@
 package app.dao;
 
-
-import app.model.Local;
+import app.model.Servicio;
 import app.zelper.ConexionDB;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,28 +9,25 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LocalDAO extends BaseDAO {
+public class ServicioDAO extends BaseDAO {
 
-    public List<Local> list(){
-        List<Local> lista = new ArrayList<Local>();
+    public List<Servicio> list() throws DAOExcepcion {
+        List<Servicio> lista = new ArrayList<Servicio>();
 
         Connection con = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
             con = ConexionDB.obtenerConexion();
-            String query = "select * from local order by descripcion;";
+            String query = "select * from servicio order;";
             stmt = con.prepareStatement(query);
             rs = stmt.executeQuery();
 
             while (rs.next()) {
-                Local item = new Local();
+                Servicio item = new Servicio();
                 item.setId(rs.getInt("id"));
                 item.setDescripcion(rs.getString("descripcion"));
-                item.setDireccion(rs.getString("direccion"));
-                item.setMaps(rs.getString("maps"));
-                item.setTelefono(rs.getString("telefono"));
-                item.setEstado(rs.getInt("estado"));
+                item.setCostoHora(rs.getDouble("costo_hora"));
                 lista.add(item);
             }
 
@@ -45,39 +41,37 @@ public class LocalDAO extends BaseDAO {
         return lista;
     }
 
-    public Local get(Local local) {
-        String query = "select * from local where id = ?";
+    public Servicio get(Servicio servicio)
+            throws DAOExcepcion {
+        String query = "select * from servicio where id = ?";
         Connection con = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        Local item = new Local();
+       Servicio servicioOriginal = new Servicio();
         try {
             con = ConexionDB.obtenerConexion();
             stmt = con.prepareStatement(query);
-            stmt.setLong(1, local.getId());
-
+            stmt.setLong(1,servicio.getId());
             rs = stmt.executeQuery();
-
+                
+            
             while (rs.next()) {
-                item.setId(rs.getInt("id"));
-                item.setDescripcion(rs.getString("descripcion"));
-                item.setDireccion(rs.getString("direccion"));
-                item.setMaps(rs.getString("maps"));
-                item.setTelefono(rs.getString("telefono"));
-                item.setEstado(rs.getInt("estado"));
+                servicioOriginal.setId(rs.getInt("id"));
+                servicioOriginal.setDescripcion(rs.getString("descripcion"));
+                servicioOriginal.setCostoHora(rs.getDouble("costo_hora"));
             }
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+              System.err.println(e.getMessage());
         } finally {
             this.cerrarResultSet(rs);
             this.cerrarStatement(stmt);
             this.cerrarConexion(con);
         }
-        return item;
+        return servicioOriginal;
     }
 
-    public Local save(Local local) {
-        String query = "insert into local(direccion,descripcion,estado,maps,telefono) values (?,?,?,?,?)";
+    public Servicio save(Servicio servicio) throws DAOExcepcion {
+        String query = "insert into servicio(descripcion,costo_hora) values (?,?)";
         Connection con = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -85,11 +79,8 @@ public class LocalDAO extends BaseDAO {
             con = ConexionDB.obtenerConexion();
             stmt = con.prepareStatement(query);
 
-            stmt.setString(1, local.getDireccion());
-            stmt.setString(2, local.getDescripcion());
-            stmt.setInt(3, local.getEstado());
-            stmt.setString(4, local.getMaps());
-            stmt.setString(5, local.getTelefono());
+            stmt.setString(1, servicio.getDescripcion());
+            stmt.setDouble(2, servicio.getCostoHora());
             int i = stmt.executeUpdate();
             if (i != 1) {
                 throw new SQLException("No se pudo insertar");
@@ -101,7 +92,7 @@ public class LocalDAO extends BaseDAO {
             if (rs.next()) {
                 id = rs.getInt(1);
             }
-            local.setId(id);
+            servicio.setId(id);
 
         } catch (SQLException e) {
             System.err.println(e.getMessage());
@@ -110,23 +101,20 @@ public class LocalDAO extends BaseDAO {
             this.cerrarStatement(stmt);
             this.cerrarConexion(con);
         }
-        return local;
+        return servicio;
     }
-
-    public Local update(Local local) {
-        String query = "update local direccion=?,descripcion=?,estado=?,maps=?,telefono=? where id=?";
+    
+     public Servicio update(Servicio servicio) throws DAOExcepcion {
+        String query = "update servicio descripcion=?,costo_hora=? where id=?";
         Connection con = null;
         PreparedStatement stmt = null;
         try {
             con = ConexionDB.obtenerConexion();
             stmt = con.prepareStatement(query);
-            stmt.setString(1, local.getDireccion());
-            stmt.setString(2, local.getDescripcion());
-            stmt.setInt(3, local.getEstado());
-            stmt.setString(4, local.getMaps());
-            stmt.setString(5, local.getTelefono());
-            stmt.setLong(6, local.getId());
-
+             stmt.setString(1, servicio.getDescripcion());
+            stmt.setDouble(2, servicio.getCostoHora());
+            stmt.setLong(3, servicio.getId());
+            
             int i = stmt.executeUpdate();
             if (i != 1) {
                 throw new SQLException("No se pudo actualizar");
@@ -137,17 +125,17 @@ public class LocalDAO extends BaseDAO {
             this.cerrarStatement(stmt);
             this.cerrarConexion(con);
         }
-        return local;
+        return servicio;
     }
 
-    public void delete(Local local) {
-        String query = "delete from local WHERE id=?";
+    public void delete(Servicio servicio) throws DAOExcepcion {
+        String query = "delete from servicio WHERE id=?";
         Connection con = null;
         PreparedStatement stmt = null;
         try {
             con = ConexionDB.obtenerConexion();
             stmt = con.prepareStatement(query);
-            stmt.setLong(1, local.getId());
+            stmt.setLong(1, servicio.getId());
             int i = stmt.executeUpdate();
             if (i != 1) {
                 throw new SQLException("No se pudo eliminar");
@@ -159,4 +147,6 @@ public class LocalDAO extends BaseDAO {
             this.cerrarConexion(con);
         }
     }
+
+   
 }
