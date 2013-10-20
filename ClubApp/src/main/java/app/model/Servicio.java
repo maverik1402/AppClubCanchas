@@ -13,7 +13,6 @@ public class Servicio {
     private long id;
     private String descripcion;
     private double costoHora;
-    private double costoHora2;
 
     public long getId() {
         return id;

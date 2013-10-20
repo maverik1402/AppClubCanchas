@@ -8,7 +8,6 @@ public class Campo {
     private int tipo;
     private double costoHora;
     private Local local;
-    private double costoHora2;
 
     public long getId() {
         return id;
