@@ -6,7 +6,7 @@ package app.model;
 
 /**
  *
- * @author Personal
+ * @author Personalhhhh
  */
 public class Socio {
     private Long id;
